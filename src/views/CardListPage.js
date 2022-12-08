@@ -7,6 +7,7 @@ import { Card, CardContent, Grid, TextField, Button } from '@mui/material';
 import { gridSpacing } from 'store/constant';
 import axios from 'axios';
 import CardView from './CardView';
+import './About.css';
 
 // ==============================|| DEFAULT CardListPage ||============================== //
 
@@ -33,19 +34,24 @@ const CardListPage = () => {
     useEffect(() => {
         getDeck();
     }, []);
+
+    const [values, setValues] = useState('');
     return (
         <Grid container spacing={gridSpacing}>
+            <input type="text" placeholder="Search..." className="search" onChange={(e) => setValues(e.target.value)}></input>
             <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Card>
                     <CardContent>
                         <Grid container spacing={gridSpacing} sx={{ mt: 3 }}>
-                            {data.map((value, index) => {
-                                return (
-                                    <Grid key={index} item lg={2} md={6} sm={12} xs={12}>
-                                        <CardView image={`${value.image}`} value={`${value.value}`} suit={`${value.suit}`} />
-                                    </Grid>
-                                );
-                            })}
+                            {data
+                                .filter((value) => value.value.toLowerCase().includes(values))
+                                .map((value, index) => {
+                                    return (
+                                        <Grid key={index} item lg={2} md={6} sm={12} xs={12}>
+                                            <CardView image={`${value.image}`} value={`${value.value}`} suit={`${value.suit}`} />
+                                        </Grid>
+                                    );
+                                })}
                         </Grid>
                     </CardContent>
                 </Card>
